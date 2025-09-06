@@ -12,7 +12,10 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}))
 app.use(cookieParser())
 
 async function connectDBase() {
@@ -20,11 +23,11 @@ async function connectDBase() {
 }
 connectDBase()
 
-app.use('/todos', authenticateToken, todosRoute)
+app.use('/todos', todosRoute)
 app.use('/auth', auth)
 
 app.use(errorHandler)
 
 app.listen(PORT, () => {
-  console.log("App is listening on: http://localhost:3000")
+  console.log("App is listening on: http://localhost:5000")
 })
