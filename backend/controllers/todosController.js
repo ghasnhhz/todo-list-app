@@ -6,7 +6,7 @@ async function getTodos(req, res) {
     const todos = await Todos.find({}, {__v: 0})
 
     if (todos.length === 0) {
-      return res.status(200).json({message: "No todos are added yet"})
+      return res.status(200).send([])
     }
 
     res.status(200).json(todos)
