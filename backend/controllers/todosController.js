@@ -1,21 +1,21 @@
 const mongoose = require('mongoose')
 const Todos = require('../models/Todo')
 
-async function getTodos(req, res) {
+async function getTodos(req, res, next) {
   try {
     const todos = await Todos.find({}, {__v: 0})
 
     if (todos.length === 0) {
-      return res.status(200).json({message: "No todos are added yet"})
+      return res.status(200).send([])
     }
 
     res.status(200).json(todos)
   } catch (err) {
-    console.log(err.message)
+    next(err)
   }
 }
 
-async function addTodos(req, res) {
+async function addTodos(req, res, next) {
   try {
     const todos = req.body
 
@@ -33,11 +33,11 @@ async function addTodos(req, res) {
       }
     })
   } catch (err) {
-    console.log(err.message)
+    next(err)
   }
 }
 
-async function editTodo(req, res) {
+async function editTodo(req, res, next) {
   try {
     const { id } = req.params
     const {title} = req.body
@@ -59,11 +59,11 @@ async function editTodo(req, res) {
       },
     })
   } catch (err) {
-    console.log(err.message)
+    next(err)
   }
 }
 
-async function deleteTodo(req, res) {
+async function deleteTodo(req, res, next) {
   try {
     const { id } = req.params
 
@@ -75,7 +75,7 @@ async function deleteTodo(req, res) {
 
     res.status(200).json({message: "Your task is deleted successfully"})
   } catch (err) {
-    console.log(err.message)
+    next(err)
   }
 }
 
